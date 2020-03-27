@@ -1,5 +1,9 @@
 import 'package:boilerplate/models/post/post.dart';
+import 'package:copy_with_extension/copy_with_extension.dart';
 
+part 'post_list.g.dart';
+
+@CopyWith()
 class PostList {
   final List<Post> posts;
 

@@ -1,3 +1,4 @@
+import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
 import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/models/post/post_list.dart';
 import 'package:boilerplate/stores/error/error_store.dart';
@@ -16,7 +17,7 @@ abstract class _PostStore with Store {
   final ErrorStore errorStore = ErrorStore();
 
   // constructor:---------------------------------------------------------------
-  _PostStore(Repository repository) : this._repository = repository;
+  _PostStore(Repository repository) : _repository = repository;
 
   // store variables:-----------------------------------------------------------
   static ObservableFuture<PostList> emptyPostResponse =
@@ -38,13 +39,34 @@ abstract class _PostStore with Store {
   // actions:-------------------------------------------------------------------
   @action
   Future getPosts() async {
-    final future = _repository.getPosts();
+    final future = _repository.postRepository.loadPosts();
     fetchPostsFuture = ObservableFuture(future);
 
     future.then((postList) {
-      this.postList = postList;
+      postList = postList;
     }).catchError((error) {
+      print(error);
       errorStore.errorMessage = DioErrorUtil.handleError(error);
     });
+  }
+
+  @action
+  void initStore(){
+    final PostDataSource postDataSource = _repository.postRepository.postDataSource;
+    postList = PostList(posts:postDataSource.posts);
+  }
+
+  void saveStore(){
+    _repository.postRepository.savePostDataSource(posts: postList.posts);
+  }
+
+  @action
+  void deleteFirstEntry(){
+    postList = postList.copyWith(posts: postList.posts.where((e) => e.id != postList.posts.first.id).toList());
+    saveStore();
+  }
+
+  Future<String> testSecureStorage(){
+    return _repository.testSecureStorage();
   }
 }

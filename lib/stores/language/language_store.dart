@@ -8,7 +8,7 @@ part 'language_store.g.dart';
 class LanguageStore = _LanguageStore with _$LanguageStore;
 
 abstract class _LanguageStore with Store {
-  static const String TAG = "LanguageStore";
+  static const String TAG = 'LanguageStore';
 
   // repository instance
   final Repository _repository;
@@ -25,13 +25,13 @@ abstract class _LanguageStore with Store {
 
   // constructor:---------------------------------------------------------------
   _LanguageStore(Repository repository)
-      : this._repository = repository {
+      : _repository = repository {
     init();
   }
 
   // store variables:-----------------------------------------------------------
   @observable
-  String _locale = "en";
+  String _locale = 'en';
 
   @computed
   String get locale => _locale;
@@ -47,14 +47,14 @@ abstract class _LanguageStore with Store {
 
   @action
   String getCode() {
-    var code;
+    String code;
 
     if (_locale == 'en') {
-      code = "US";
+      code = 'US';
     } else if (_locale == 'da') {
-      code = "DK";
+      code = 'DK';
     } else if (_locale == 'es') {
-      code = "ES";
+      code = 'ES';
     }
 
     return code;
@@ -68,7 +68,7 @@ abstract class _LanguageStore with Store {
   }
 
   // general:-------------------------------------------------------------------
-  void init() async {
+  Future init() async {
     // getting current language from shared preference
     _repository?.currentLanguage?.then((locale) {
       if (locale != null) {
@@ -79,5 +79,5 @@ abstract class _LanguageStore with Store {
 
   // dispose:-------------------------------------------------------------------
   @override
-  dispose() {}
+  void dispose() {}
 }

@@ -91,7 +91,7 @@ abstract class _FormStore with Store {
     if (value.isEmpty) {
       formErrorStore.password = "Password can't be empty";
     } else if (value.length < 6) {
-      formErrorStore.password = "Password must be at-least 6 characters long";
+      formErrorStore.password = 'Password must be at-least 6 characters long';
     } else {
       formErrorStore.password = null;
     }
@@ -117,15 +117,15 @@ abstract class _FormStore with Store {
   Future login() async {
     loading = true;
 
-    Future.delayed(Duration(milliseconds: 2000)).then((future) {
+    Future.delayed(const Duration(milliseconds: 2000)).then((future) {
       loading = false;
       success = true;
     }).catchError((e) {
       loading = false;
       success = false;
-      errorStore.errorMessage = e.toString().contains("ERROR_USER_NOT_FOUND")
+      errorStore.errorMessage = e.toString().contains('ERROR_USER_NOT_FOUND')
           ? "Username and password doesn't match"
-          : "Something went wrong, please check your internet connection and try again";
+          : 'Something went wrong, please check your internet connection and try again';
       print(e);
     });
   }

@@ -8,7 +8,7 @@ part 'theme_store.g.dart';
 class ThemeStore = _ThemeStore with _$ThemeStore;
 
 abstract class _ThemeStore with Store {
-  final String TAG = "_ThemeStore";
+  final String TAG = '_ThemeStore';
 
   // repository instance
   final Repository _repository;
@@ -26,7 +26,7 @@ abstract class _ThemeStore with Store {
 
   // constructor:---------------------------------------------------------------
   _ThemeStore(Repository repository)
-      : this._repository = repository {
+      : _repository = repository {
     init();
   }
 
@@ -47,7 +47,7 @@ abstract class _ThemeStore with Store {
 
   // dispose:-------------------------------------------------------------------
   @override
-  dispose() {
+  void dispose() {
 
   }
 }

@@ -24,7 +24,7 @@ abstract class _ErrorStore with Store {
   // actions:-------------------------------------------------------------------
   @action
   void setErrorMessage(String message) {
-    this.errorMessage = message;
+    errorMessage = message;
   }
 
   @action
@@ -35,7 +35,7 @@ abstract class _ErrorStore with Store {
 
   // dispose:-------------------------------------------------------------------
   @action
-  dispose() {
+  void dispose() {
     for (final d in _disposers) {
       d();
     }

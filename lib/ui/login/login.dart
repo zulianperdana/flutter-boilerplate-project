@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
           OrientationBuilder(
             builder: (context, orientation) {
               //variable to hold widget
-              var child;
+              Widget child;
 
               //check to see whether device is in landscape or portrait
               //load widgets based on device orientation
@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
             builder: (context) {
               return Visibility(
                 visible: _store.loading,
-                child: CustomProgressIndicatorWidget(),
+                child: const CustomProgressIndicatorWidget(),
               );
             },
           )
@@ -118,8 +118,8 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              AppIconWidget(image: 'assets/icons/ic_appicon.png'),
-              SizedBox(height: 24.0),
+              const AppIconWidget(image: 'assets/icons/ic_appicon.png'),
+              const SizedBox(height: 24.0),
               _buildUserIdField(),
               _buildPasswordField(),
               _buildForgotPasswordButton(),
@@ -159,7 +159,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return TextFieldWidget(
           hint: AppLocalizations.of(context).translate('login_et_user_password'),
           isObscure: true,
-          padding: EdgeInsets.only(top: 16.0),
+          padding: const EdgeInsets.only(top: 16.0),
           icon: Icons.lock,
           iconColor: Colors.black54,
           textController: _passwordController,
@@ -177,7 +177,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Align(
       alignment: FractionalOffset.centerRight,
       child: FlatButton(
-        padding: EdgeInsets.all(0.0),
+        padding: const EdgeInsets.all(0.0),
         child: Text(
           AppLocalizations.of(context).translate('login_btn_forgot_password'),
           style: Theme.of(context)
@@ -211,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
       prefs.setBool(Preferences.is_logged_in, true);
     });
 
-    Future.delayed(Duration(milliseconds: 0), () {
+    Future.delayed(const Duration(milliseconds: 0), () {
       Navigator.of(context).pushNamedAndRemoveUntil(
           Routes.home, (Route<dynamic> route) => false);
     });
@@ -221,17 +221,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   // General Methods:-----------------------------------------------------------
   _showErrorMessage( String message) {
-    Future.delayed(Duration(milliseconds: 0), () {
+    Future.delayed(const Duration(milliseconds: 0), () {
       if (message != null && message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
           title: AppLocalizations.of(context).translate('home_tv_error'),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         )..show(context);
       }
     });
 
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
   // dispose:-------------------------------------------------------------------

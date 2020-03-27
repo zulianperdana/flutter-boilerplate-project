@@ -1,4 +1,5 @@
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inject/inject.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,12 @@ class PreferenceModule {
   @asynchronous
   Future<SharedPreferences> provideSharedPreferences() {
     return SharedPreferences.getInstance();
+  }
+
+  @provide
+  @singleton
+  FlutterSecureStorage provideSecureStorage() {
+    return const FlutterSecureStorage();
   }
 
   /// A singleton preference helper provider.

@@ -1,3 +1,8 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'post.g.dart';
+
+@JsonSerializable(nullable: false)
 class Post {
   int userId;
   int id;
@@ -11,18 +16,21 @@ class Post {
     this.body,
   });
 
+  factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
+  Map<String, dynamic> toJson() => _$PostToJson(this);
+
   factory Post.fromMap(Map<String, dynamic> json) => Post(
-        userId: json["userId"],
-        id: json["id"],
-        title: json["title"],
-        body: json["body"],
+        userId: json['userId'],
+        id: json['id'],
+        title: json['title'],
+        body: json['body'],
       );
 
   Map<String, dynamic> toMap() => {
-        "userId": userId,
-        "id": id,
-        "title": title,
-        "body": body,
+        'userId': userId,
+        'id': id,
+        'title': title,
+        'body': body,
       };
   
 }

@@ -1,4 +1,5 @@
 import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'package:boilerplate/providers/alert_provider.dart';
 import 'package:boilerplate/routes.dart';
 import 'package:boilerplate/stores/language/language_store.dart';
 import 'package:boilerplate/stores/post/post_store.dart';
@@ -98,8 +99,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildLanguageButton() {
     return IconButton(
-      onPressed: () {
-        _buildLanguageDialog();
+      onPressed: () async{
+        Provider.of<AlertProvider>(context,listen: false).showAlert(await _postStore.testSecureStorage());
       },
       icon: Icon(
         Icons.language,
@@ -121,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Observer(
       builder: (context) {
         return _postStore.loading
-            ? CustomProgressIndicatorWidget()
+            ? const CustomProgressIndicatorWidget()
             : Material(child: _buildListView());
       },
     );
@@ -132,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ? ListView.separated(
             itemCount: _postStore.postList.posts.length,
             separatorBuilder: (context, position) {
-              return Divider();
+              return const Divider();
             },
             itemBuilder: (context, position) {
               return _buildListItem(position);
@@ -172,35 +173,35 @@ class _HomeScreenState extends State<HomeScreen> {
           return _showErrorMessage(_postStore.errorStore.errorMessage);
         }
 
-        return SizedBox.shrink();
+        return const SizedBox.shrink();
       },
     );
   }
 
   // General Methods:-----------------------------------------------------------
-  _showErrorMessage(String message) {
-    Future.delayed(Duration(milliseconds: 0), () {
+  Widget _showErrorMessage(String message) {
+    Future.delayed(const Duration(milliseconds: 0), () {
       if (message != null && message.isNotEmpty) {
         FlushbarHelper.createError(
           message: message,
           title: AppLocalizations.of(context).translate('home_tv_error'),
-          duration: Duration(seconds: 3),
+          duration: const Duration(seconds: 3),
         )..show(context);
       }
     });
 
-    return SizedBox.shrink();
+    return const SizedBox.shrink();
   }
 
-  _buildLanguageDialog() {
-    _showDialog<String>(
+  Future _buildLanguageDialog() {
+    return _showDialog<String>(
       context: context,
       child: MaterialDialog(
         borderRadius: 5.0,
         enableFullWidth: true,
         title: Text(
           AppLocalizations.of(context).translate('home_tv_choose_language'),
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16.0,
           ),
@@ -217,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .map(
               (object) => ListTile(
                 dense: true,
-                contentPadding: EdgeInsets.all(0.0),
+                contentPadding: const EdgeInsets.all(0.0),
                 title: Text(
                   object.language,
                   style: TextStyle(
@@ -238,8 +239,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _showDialog<T>({BuildContext context, Widget child}) {
-    showDialog<T>(
+  Future _showDialog<T>({BuildContext context, Widget child}) {
+    return showDialog<T>(
       context: context,
       builder: (BuildContext context) => child,
     ).then<void>((T value) {

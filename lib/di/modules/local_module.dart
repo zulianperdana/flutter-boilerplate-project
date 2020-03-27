@@ -6,6 +6,7 @@ import 'package:boilerplate/data/network/apis/posts/post_api.dart';
 import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
 import 'package:boilerplate/utils/encryption/xxtea.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inject/inject.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,7 +36,7 @@ class LocalModule extends NetworkModule {
   @asynchronous
   Future<Database> provideDatabase() async {
     // Key for encryption
-    var encryptionKey = "";
+    const encryptionKey = '';
 
     // Get a platform-specific directory where persistent app data can be stored
     final appDocumentDir = await getApplicationDocumentsDirectory();
@@ -45,10 +46,10 @@ class LocalModule extends NetworkModule {
 
     // Check to see if encryption is set, then provide codec
     // else init normal db with path
-    var database;
+    Database database;
     if (encryptionKey.isNotEmpty) {
       // Initialize the encryption codec with a user password
-      var codec = getXXTeaCodec(password: encryptionKey);
+      final codec = getXXTeaCodec(password: encryptionKey);
       database = await databaseFactoryIo.openDatabase(dbPath, codec: codec);
     } else {
       database = await databaseFactoryIo.openDatabase(dbPath);
@@ -74,10 +75,16 @@ class LocalModule extends NetworkModule {
   /// Calling it multiple times will return the same instance.
   @provide
   @singleton
-  Repository provideRepository(
+  @asynchronous
+  Future<Repository> provideRepository(
     PostApi postApi,
     SharedPreferenceHelper preferenceHelper,
     PostDataSource postDataSource,
-  ) =>
-      Repository(postApi, preferenceHelper, postDataSource);
+    FlutterSecureStorage secureStorage,
+  ) async{
+    final Repository repository = 
+      Repository(postApi, preferenceHelper, postDataSource,secureStorage);
+    await repository.postRepository.restoreData();
+    return repository;
+  }
 }

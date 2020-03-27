@@ -26,13 +26,13 @@ class AppLocalizations {
   // present in lang folder
   Future<bool> load() async {
     // Load the language JSON file from the "lang" folder
-    String jsonString =
+    final String jsonString =
     await rootBundle.loadString('assets/lang/${locale.languageCode}.json');
-    Map<String, dynamic> jsonMap = json.decode(jsonString);
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     localizedStrings = jsonMap.map((key, value) {
       return MapEntry(
-          key, value.toString().replaceAll(r"\'", "'").replaceAll(r"\t", " "));
+          key, value.toString().replaceAll(r"\'", "'").replaceAll(r'\t', ' '));
     });
 
     return true;
@@ -64,7 +64,7 @@ class _AppLocalizationsDelegate
   @override
   Future<AppLocalizations> load(Locale locale) async {
     // AppLocalizations class is where the JSON loading actually runs
-    AppLocalizations localizations = new AppLocalizations(locale);
+    final AppLocalizations localizations = AppLocalizations(locale);
     await localizations.load();
     return localizations;
   }

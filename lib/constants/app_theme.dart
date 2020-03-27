@@ -25,7 +25,7 @@ import 'package:boilerplate/constants/font_family.dart';
 
 import 'package:flutter/material.dart';
 
-final ThemeData themeData = new ThemeData(
+final ThemeData themeData = ThemeData(
     fontFamily: FontFamily.productSans,
     brightness: Brightness.light,
     primarySwatch: MaterialColor(AppColors.orange[500].value, AppColors.orange),

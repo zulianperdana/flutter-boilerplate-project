@@ -1,4 +1,4 @@
-package com.iotecksolutions.todoapp;
+package co.id.usahakreatif.boilerplate;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

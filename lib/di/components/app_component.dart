@@ -9,7 +9,7 @@ import 'app_component.inject.dart' as g;
 
 /// The top level injector that stitches together multiple app features into
 /// a complete app.
-@Injector(const [NetworkModule, LocalModule, PreferenceModule])
+@Injector([NetworkModule, LocalModule, PreferenceModule])
 abstract class AppComponent {
   @provide
   MyApp get app;

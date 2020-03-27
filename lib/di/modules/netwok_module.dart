@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 @module
 class NetworkModule extends PreferenceModule {
   // ignore: non_constant_identifier_names
-  final String TAG = "NetworkModule";
+  final String TAG = 'NetworkModule';
 
   // DI Providers:--------------------------------------------------------------
   /// A singleton dio provider.
@@ -38,10 +38,10 @@ class NetworkModule extends PreferenceModule {
         InterceptorsWrapper(
           onRequest: (Options options) async {
             // getting shared pref instance
-            var prefs = await SharedPreferences.getInstance();
+            final prefs = await SharedPreferences.getInstance();
 
             // getting token
-            var token = prefs.getString(Preferences.auth_token);
+            final token = prefs.getString(Preferences.auth_token);
 
             if (token != null) {
               options.headers.putIfAbsent('Authorization', () => token);

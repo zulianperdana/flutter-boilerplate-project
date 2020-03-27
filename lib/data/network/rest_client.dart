@@ -8,7 +8,7 @@ import 'exceptions/network_exceptions.dart';
 class RestClient {
 
   // instantiate json decoder for json serialization
-  final JsonDecoder _decoder = JsonDecoder();
+  final JsonDecoder _decoder = const JsonDecoder();
 
   // Get:-----------------------------------------------------------------------
   Future<dynamic> get(String url) {
@@ -18,7 +18,7 @@ class RestClient {
 
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw NetworkException(
-            message: "Error fetching data from server", statusCode: statusCode);
+            message: 'Error fetching data from server', statusCode: statusCode);
       }
 
       print(res);
@@ -36,7 +36,7 @@ class RestClient {
 
       if (statusCode < 200 || statusCode > 400 || json == null) {
         throw NetworkException(
-            message: "Error fetching data from server", statusCode: statusCode);
+            message: 'Error fetching data from server', statusCode: statusCode);
       }
       return _decoder.convert(res);
     });

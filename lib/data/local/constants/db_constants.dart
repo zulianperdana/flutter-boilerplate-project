@@ -6,7 +6,4 @@ class DBConstants {
 
   // DB Name
   static const DB_NAME = 'demo.db';
-
-  // Fields
-  static const FIELD_ID = 'id';
 }

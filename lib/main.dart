@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:boilerplate/constants/app_theme.dart';
+import 'package:boilerplate/utils/completer/completer.dart';
 import 'package:boilerplate/constants/strings.dart';
+import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/di/components/app_component.dart';
 import 'package:boilerplate/di/modules/local_module.dart';
 import 'package:boilerplate/di/modules/netwok_module.dart';
@@ -8,20 +12,28 @@ import 'package:boilerplate/routes.dart';
 import 'package:boilerplate/stores/language/language_store.dart';
 import 'package:boilerplate/stores/post/post_store.dart';
 import 'package:boilerplate/stores/theme/theme_store.dart';
-import 'package:boilerplate/ui/splash/splash.dart';
 import 'package:boilerplate/utils/locale/app_localization.dart';
+import 'package:boilerplate/widgets/service_wrapper/alert_service.dart';
+import 'package:boilerplate/widgets/service_wrapper/onesignal_service.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:inject/inject.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:provider/provider.dart';
+
+import 'routes.dart';
 
 // global instance for app component
 AppComponent appComponent;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  appReady = Completer<bool>();
+  Crashlytics.instance.enableInDevMode = true;
+  FlutterError.onError = Crashlytics.instance.recordFlutterError;
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -42,12 +54,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   // Create your store as a final variable in a base Widget. This works better
   // with Hot Reload than creating it directly in the `build` function.
-  final ThemeStore _themeStore = ThemeStore(appComponent.getRepository());
-  final PostStore _postStore = PostStore(appComponent.getRepository());
-  final LanguageStore _languageStore = LanguageStore(appComponent.getRepository());
+  static Repository repository = appComponent.getRepository();
+  final ThemeStore _themeStore = ThemeStore(repository);
+  final PostStore _postStore = PostStore(repository)..initStore();
+  final LanguageStore _languageStore = LanguageStore(repository);
+
+  final Router router = Routes.initRoutes();
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     return MultiProvider(
       providers: [
         Provider<ThemeStore>.value(value: _themeStore),
@@ -57,10 +73,11 @@ class MyApp extends StatelessWidget {
       child: Observer(
         builder: (context) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: Strings.appName,
             theme: _themeStore.darkMode ? themeDataDark : themeData,
-            routes: Routes.routes,
+            onGenerateRoute: router.generator,
             locale: Locale(_languageStore.locale),
             supportedLocales: _languageStore.supportedLanguages
                 .map((language) => Locale(language.locale, language.code))
@@ -82,7 +99,14 @@ class MyApp extends StatelessWidget {
                     (supportedLocale) =>
                         supportedLocale.languageCode == locale.languageCode,
                     orElse: () => supportedLocales.first),
-            home: SplashScreen(),
+            builder: (_, widget) {
+              return OneSignalServiceWrapper(
+                navigatorKey: navigatorKey,
+                child: AlertServiceWrapper(
+                    navigatorKey: navigatorKey, child: widget),
+              );
+            },
+            initialRoute: Routes.splash,
           );
         },
       ),

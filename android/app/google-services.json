@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "115864054954",
+    "firebase_url": "https://boilerplate-10207.firebaseio.com",
+    "project_id": "boilerplate-10207",
+    "storage_bucket": "boilerplate-10207.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115864054954:android:e6e2f9d3fdbfe3a7d5f4d3",
+        "android_client_info": {
+          "package_name": "co.id.usahakreatif.boilerplate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "115864054954-qpoqegqr3c15vs2vhd7nlkrk9750sv77.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoJacGUB0873-cDN__t5hjxp-YN7bzDcY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "115864054954-qpoqegqr3c15vs2vhd7nlkrk9750sv77.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "115864054954-tufbp7s39r3jbavrjr418tsdhlifqo5c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.id.usahakreatif.boilerplate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
