@@ -90,6 +90,11 @@ In Visual Studio Code, navigate to `Preferences` -> `Settings` and search for `F
 * [Logging](https://github.com/zubairehman/Flogs)
 * [Notifications](https://github.com/AndreHaueisen/flushbar)
 * [Json Serialization](https://github.com/dart-lang/json_serializable)
+* [CopyWith Generator](https://pub.dev/packages/copy_with_extension_gen)
+* [Secure Storage](https://pub.dev/packages/flutter_secure_storage)
+* [Pedantic](https://pub.dev/packages/pedantic)
+* [Fluro](https://pub.dev/packages/fluro)
+* [Firebase](https://pub.dev/packages/firebase)
 * [Dependency Injection](https://github.com/google/inject.dart)
 
 ### Folder Structure
