@@ -1,4 +1,5 @@
-import 'package:boilerplate/data/sharedpref/constants/preferences.dart';
+import 'package:boilerplate/data/network/exceptions/network_exceptions.dart';
+import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/providers/alert_provider.dart';
 import 'package:boilerplate/routes.dart';
 import 'package:boilerplate/stores/language/language_store.dart';
@@ -73,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context) {
         return IconButton(
           onPressed: () {
+            throw AuthException();
             _themeStore.changeBrightnessToDark(!_themeStore.darkMode);
           },
           icon: Icon(
@@ -87,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return IconButton(
       onPressed: () {
         SharedPreferences.getInstance().then((preference) {
-          preference.setBool(Preferences.is_logged_in, false);
+          Provider.of<Repository>(context, listen:false).authRepository.logout();
           Navigator.of(context).pushReplacementNamed(Routes.login);
         });
       },

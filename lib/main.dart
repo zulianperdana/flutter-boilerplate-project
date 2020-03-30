@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:boilerplate/utils/report_mode/custom_dialog_report_mode.dart';
+import 'package:catcher/catcher_plugin.dart';
 import 'package:boilerplate/constants/app_theme.dart';
 import 'package:boilerplate/utils/completer/completer.dart';
 import 'package:boilerplate/constants/strings.dart';
@@ -31,21 +33,36 @@ AppComponent appComponent;
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  final explicitReportModesMap = {'FormatException': SilentReportMode()};
+  final explicitMap = {'FormatException': ConsoleHandler()};
+  final CatcherOptions debugOptions = CatcherOptions(
+    CustomDialogReportMode(),
+    [ConsoleHandler()],
+    explicitExceptionHandlersMap: explicitMap,
+    explicitExceptionReportModesMap: explicitReportModesMap,
+  );
+  final CatcherOptions releaseOptions = CatcherOptions(
+    DialogReportMode(),
+    [
+      EmailManualHandler(
+        ['recipient@email.com'],
+      )
+    ],
+    explicitExceptionHandlersMap: explicitMap,
+    explicitExceptionReportModesMap: explicitReportModesMap,
+  );
   appReady = Completer<bool>();
   Crashlytics.instance.enableInDevMode = true;
   FlutterError.onError = Crashlytics.instance.recordFlutterError;
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-    DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft,
-  ]).then((_) async {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) async {
     appComponent = await AppComponent.create(
       NetworkModule(),
       LocalModule(),
       PreferenceModule(),
     );
-    runApp(appComponent.app);
+    Catcher(appComponent.app,
+        debugConfig: debugOptions, releaseConfig: releaseOptions);
   });
 }
 
@@ -63,12 +80,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+    final GlobalKey<NavigatorState> navigatorKey = Catcher.navigatorKey;
     return MultiProvider(
       providers: [
         Provider<ThemeStore>.value(value: _themeStore),
         Provider<PostStore>.value(value: _postStore),
         Provider<LanguageStore>.value(value: _languageStore),
+        Provider<Repository>.value(value: repository),
       ],
       child: Observer(
         builder: (context) {

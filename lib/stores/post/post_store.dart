@@ -67,6 +67,6 @@ abstract class _PostStore with Store {
   }
 
   Future<String> testSecureStorage(){
-    return _repository.testSecureStorage();
+    return Future.value('');
   }
 }

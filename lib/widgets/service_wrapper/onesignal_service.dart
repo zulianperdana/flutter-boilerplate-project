@@ -2,7 +2,6 @@ import 'package:boilerplate/constants/onesignal.dart';
 import 'package:boilerplate/stores/post/post_store.dart';
 import 'package:boilerplate/utils/completer/completer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:provider/provider.dart';
 

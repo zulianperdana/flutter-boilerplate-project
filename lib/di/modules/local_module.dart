@@ -5,8 +5,8 @@ import 'package:boilerplate/data/local/datasources/post/post_datasource.dart';
 import 'package:boilerplate/data/network/apis/posts/post_api.dart';
 import 'package:boilerplate/data/repository.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:boilerplate/data/token/token_helper.dart';
 import 'package:boilerplate/utils/encryption/xxtea.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inject/inject.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -80,10 +80,10 @@ class LocalModule extends NetworkModule {
     PostApi postApi,
     SharedPreferenceHelper preferenceHelper,
     PostDataSource postDataSource,
-    FlutterSecureStorage secureStorage,
+    TokenHelper tokenHelper,
   ) async{
     final Repository repository = 
-      Repository(postApi, preferenceHelper, postDataSource,secureStorage);
+      Repository(postApi, preferenceHelper, postDataSource,tokenHelper);
     await repository.postRepository.restoreData();
     return repository;
   }

@@ -1,6 +1,12 @@
+import 'dart:io';
+
+import 'package:boilerplate/data/device/device.dart';
 import 'package:boilerplate/data/sharedpref/shared_preference_helper.dart';
+import 'package:boilerplate/data/token/token_helper.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:inject/inject.dart';
+import 'package:device_info/device_info.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 @module
@@ -28,6 +34,27 @@ class PreferenceModule {
 
   @provide
   @singleton
+  @asynchronous
+  Future<Device> provideDevice() async {
+    final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    if (Platform.isAndroid) {
+      final AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      return Device(
+          deviceId: androidInfo.id + androidInfo.androidId,
+          version: packageInfo.version,
+          buildNumber: packageInfo.buildNumber);
+    } else {
+      final IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      return Device(
+          deviceId: iosInfo.identifierForVendor,
+          version: packageInfo.version,
+          buildNumber: packageInfo.buildNumber);
+    }
+  }
+
+  @provide
+  @singleton
   FlutterSecureStorage provideSecureStorage() {
     return const FlutterSecureStorage();
   }
@@ -39,5 +66,11 @@ class PreferenceModule {
   @singleton
   SharedPreferenceHelper provideSharedPreferenceHelper() {
     return SharedPreferenceHelper(sharedPref);
+  }
+
+  @provide
+  @singleton
+  TokenHelper provideTokenHelper(FlutterSecureStorage secureStorage) {
+    return TokenHelper(secureStorage);
   }
 }
